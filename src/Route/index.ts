@@ -9,5 +9,5 @@ interface Route {
 
 export const routes: Route[] = [
   { path: '/', element: Home, label: 'Home' },
-  { path: '/landlord', element: Landlord, label: 'Landlord' },
+  { path: 'landlord', element: Landlord, label: 'Landlord' },
 ];

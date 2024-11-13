@@ -9,10 +9,12 @@ const loginUrl = 'login'
 export const Login = (data: ILogin) => async (dispatch: any) => {
   try {
     const res = await post(`${apiURL}/${loginUrl}`, data);
-    DataStore.set('token', res.data)
-    const user = await get(`${apiURL}/me`)
-    dispatch(setUser(user.data));
-  } catch (err) {
-    console.error(err);
+    console.log(res.data)
+    DataStore.set('ACCESS_TOKEN', res.data.data)
+    const user = await get(`${apiURL}/user/me`)
+    console.log(user.data.data)
+    dispatch(setUser(user.data.data));
+  } catch (err: any) {
+    console.error(err.response.data);
   }
 };

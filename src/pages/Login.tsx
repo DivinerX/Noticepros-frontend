@@ -7,12 +7,14 @@ import { AppDispatch } from '../redux';
 export interface ILogin {
   email: string;
   password: string;
+  type: number;
 }
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<ILogin>({
     email: '',
     password: '',
+    type: 1,
   });
   const dispatch: AppDispatch = useDispatch();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -20,7 +22,6 @@ const Login: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  console.log(formData)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
@@ -38,11 +39,12 @@ const Login: React.FC = () => {
         <div>
           <label className="block text-gray-600 font-medium">Email</label>
           <input
-            type="text"
+            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             className="w-full p-1 mt-1 border rounded text-sm"
+            required
           />
         </div>
 

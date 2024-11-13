@@ -1,15 +1,18 @@
 import { post } from './axios';
 
-import { apiURL } from '../common';
-import { setOwner } from '../redux/slice/owner.slice';
-import { ILandlord } from '../pages/Owner';
+import { apiURL, DataStore } from '../common';
+import { IOwner } from '../pages/Owner';
+import { AppDispatch } from '../redux';
+import { GetUserInfo } from './auth.api';
 
-const landlordPartUrl = 'landlord'
+const userUrl = 'user'
 
-export const StoreLandlord = (data: ILandlord) => async (dispatch: any) => {
+export const StoreOwner = (data: IOwner) => async (dispatch: AppDispatch) => {
   try {
-    const res = await post(`${apiURL}/${landlordPartUrl}`, data);
-    dispatch(setOwner(res.data));
+    const res = await post(`${apiURL}/${userUrl}`, data);
+    DataStore.set('ACCESS_TOKEN', res.data.data.Token)
+    alert(`Your password is ${res.data.data.Password}`)
+    dispatch(GetUserInfo());
   } catch (err) {
     console.error(err);
   }

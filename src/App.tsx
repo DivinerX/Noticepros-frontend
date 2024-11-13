@@ -4,14 +4,27 @@ import { routes } from './Route';
 import { Provider } from 'react-redux';
 import store from './redux/index';
 import "./App.css"
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
     <Provider store={store}>
       <Router>
         <Routes>
-          {routes.map(({ path, element: Element }, index) => (
-            <Route key={index} path={path} element={<Element />} />
+          {routes.map(({ path, element: Element, protected: isProtected }) => (
+            <Route
+              key={path}
+              path={path}
+              element={
+                isProtected ? (
+                  <PrivateRoute>
+                    <Element />
+                  </PrivateRoute>
+                ) : (
+                  <Element />
+                )
+              }
+            />
           ))}
         </Routes>
       </Router>

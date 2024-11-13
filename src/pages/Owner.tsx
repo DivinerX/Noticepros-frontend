@@ -5,33 +5,41 @@ import * as Api from '../api'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux';
 
-export interface ILandlord {
-  firstName: string;
-  lastName: string;
-  businessName: string;
-  streetAddress: string;
-  city: string;
-  unit: string;
-  state: string;
-  code: string;
-  county: string;
-  phone: string;
-  email: string;
+export interface IOwner {
+  FirstName: string;
+  LastName: string;
+  BusinessName: string;
+  Address: string;
+  City: string;
+  Unit: string;
+  State: string;
+  ZipCode: string;
+  County: string;
+  TelePhone: string;
+  TelePhoneCell: string;
+  TelePhoneFax: string;
+  Email1: string;
+  Email2: string;
+  Role: string;
 }
 
-const Landlord: React.FC = () => {
-  const [formData, setFormData] = useState<ILandlord>({
-    firstName: '',
-    lastName: '',
-    businessName: '',
-    streetAddress: '',
-    unit: '',
-    city: '',
-    state: 'California',
-    code: '',
-    county: '',
-    phone: '',
-    email: '',
+const Owner: React.FC = () => {
+  const [formData, setFormData] = useState<IOwner>({
+    FirstName: '',
+    LastName: '',
+    BusinessName: '',
+    Address: '',
+    Unit: '',
+    City: '',
+    State: 'California',
+    ZipCode: '',
+    County: '',
+    TelePhone: '',
+    TelePhoneCell: '',
+    TelePhoneFax: '',
+    Email1: '',
+    Email2: '',
+    Role: 'owner'
   });
   const dispatch: AppDispatch = useDispatch();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -43,7 +51,7 @@ const Landlord: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    dispatch(Api.StoreLandlord(formData))
+    dispatch(Api.StoreOwner(formData))
   };
 
   return (
@@ -60,8 +68,8 @@ const Landlord: React.FC = () => {
             <label className="block text-gray-600 font-medium">First name</label>
             <input
               type="text"
-              name="firstName"
-              value={formData.firstName}
+              name="FirstName"
+              value={formData.FirstName}
               onChange={handleChange}
               className="w-full p-1 mt-1 border rounded text-sm"
               required
@@ -71,8 +79,8 @@ const Landlord: React.FC = () => {
             <label className="block text-gray-600 font-medium">Last name</label>
             <input
               type="text"
-              name="lastName"
-              value={formData.lastName}
+              name="LastName"
+              value={formData.LastName}
               onChange={handleChange}
               className="w-full p-1 mt-1 border rounded text-sm"
               required
@@ -84,78 +92,68 @@ const Landlord: React.FC = () => {
           <label className="block text-gray-600 font-medium">Business name</label>
           <input
             type="text"
-            name="businessName"
-            value={formData.businessName}
+            name="BusinessName"
+            value={formData.BusinessName}
             onChange={handleChange}
             className="w-full p-1 mt-1 border rounded text-sm"
           />
         </div>
 
-        <div>
-          <label className="block text-gray-600 font-medium">Street Address</label>
-          <input
-            type="text"
-            name="streetAddress"
-            value={formData.streetAddress}
-            onChange={handleChange}
-            className="w-full p-1 mt-1 border rounded text-sm"
-            required
-          />
-        </div>
         <div className="flex space-x-4">
           <div className="w-1/2">
-            <label className="block text-gray-600 font-medium">Unit or Suite</label>
+            <label className="block text-gray-600 font-medium">Street Address</label>
             <input
               type="text"
-              name="unit"
-              value={formData.unit}
-              onChange={handleChange}
-              className="w-full p-1 mt-1 border rounded text-sm"
-            />
-          </div>
-          <div className="w-1/2">
-            <label className="block text-gray-600 font-medium">City</label>
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
+              name="Address"
+              value={formData.Address}
               onChange={handleChange}
               className="w-full p-1 mt-1 border rounded text-sm"
               required
             />
           </div>
+          <div className="w-1/2">
+            <label className="block text-gray-600 font-medium">Unit or Suite</label>
+            <input
+              type="text"
+              name="Unit"
+              value={formData.Unit}
+              onChange={handleChange}
+              className="w-full p-1 mt-1 border rounded text-sm"
+            />
+          </div>
         </div>
         <div className="flex space-x-4">
+          <div className="w-1/2">
+            <label className="block text-gray-600 font-medium">City</label>
+            <input
+              type="text"
+              name="City"
+              value={formData.City}
+              onChange={handleChange}
+              className="w-full p-1 mt-1 border rounded text-sm"
+              required
+            />
+          </div>
           <div className="w-1/2">
             <label className="block text-gray-600 font-medium">State</label>
             <input
               type="text"
-              name="state"
-              value={formData.state}
+              name="State"
+              value={formData.State}
               onChange={handleChange}
               className="w-full p-1 mt-1 border rounded text-sm"
               required
               readOnly
             />
           </div>
-          <div className="w-1/2">
-            <label className="block text-gray-600 font-medium">Zip code</label>
-            <input
-              type="text"
-              name="code"
-              value={formData.code}
-              onChange={handleChange}
-              className="w-full p-1 mt-1 border rounded text-sm"
-              required
-            />
-          </div>
         </div>
-        <div className='flex space-x-4'>
+        <div className="flex space-x-4">
+
           <div className="w-1/2">
             <label className="block text-gray-600 font-medium">County</label>
             <select
-              name="county"
-              value={formData.county}
+              name="County"
+              value={formData.County}
               onChange={handleChange}
               className="w-full p-1 mt-1 border rounded text-sm"
               required
@@ -221,14 +219,50 @@ const Landlord: React.FC = () => {
               <option value="Yuba">Yuba</option>
             </select>
           </div>
-
           <div className="w-1/2">
-            <label className="block text-gray-600 font-medium">Phone number</label>
+            <label className="block text-gray-600 font-medium">Zip Code</label>
+            <input
+              type="text"
+              name="ZipCode"
+              value={formData.ZipCode}
+              onChange={handleChange}
+              className="w-full p-1 mt-1 border rounded text-sm"
+              required
+            />
+          </div>
+        </div>
+        <div className='flex space-x-4'>
+          <div className="w-1/3">
+            <label className="block text-gray-600 font-medium">TelePhone</label>
             <InputMask
               mask="999-999-9999"
               placeholder="###-###-####"
-              name="phone"
-              value={formData.phone}
+              name="TelePhone"
+              value={formData.TelePhone}
+              onChange={handleChange}
+              className="w-full p-1 mt-1 border rounded text-sm"
+              required
+            />
+          </div>
+          <div className="w-1/3">
+            <label className="block text-gray-600 font-medium">TelePhoneCell</label>
+            <InputMask
+              mask="999-999-9999"
+              placeholder="###-###-####"
+              name="TelePhoneCell"
+              value={formData.TelePhoneCell}
+              onChange={handleChange}
+              className="w-full p-1 mt-1 border rounded text-sm"
+              required
+            />
+          </div>
+          <div className="w-1/3">
+            <label className="block text-gray-600 font-medium">TelePhoneFax</label>
+            <InputMask
+              mask="999-999-9999"
+              placeholder="###-###-####"
+              name="TelePhoneFax"
+              value={formData.TelePhoneFax}
               onChange={handleChange}
               className="w-full p-1 mt-1 border rounded text-sm"
               required
@@ -236,16 +270,29 @@ const Landlord: React.FC = () => {
           </div>
         </div>
 
-        <div>
-          <label className="block text-gray-600 font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full p-1 mt-1 border rounded text-sm"
-            required
-          />
+        <div className='flex space-x-4'>
+          <div className="w-1/2">
+            <label className="block text-gray-600 font-medium">Email</label>
+            <input
+              type="email"
+              name="Email1"
+              value={formData.Email1}
+              onChange={handleChange}
+              className="w-full p-1 mt-1 border rounded text-sm"
+              required
+            />
+          </div>
+          <div className="w-1/2">
+            <label className="block text-gray-600 font-medium">Email</label>
+            <input
+              type="email"
+              name="Email2"
+              value={formData.Email2}
+              onChange={handleChange}
+              className="w-full p-1 mt-1 border rounded text-sm"
+              required
+            />
+          </div>
         </div>
 
         <p>Or you can log in <Link to="/login" className='text-blue-600 py-3'>here</Link></p>
@@ -260,4 +307,4 @@ const Landlord: React.FC = () => {
   );
 };
 
-export default Landlord;
+export default Owner;

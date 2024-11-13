@@ -6,10 +6,11 @@ interface Route {
   path: string;
   element: React.FC;
   label?: string;
+  protected?: boolean;
 }
 
 export const routes: Route[] = [
-  { path: '/', element: Home, label: 'Home' },
+  { path: '/', element: Home, label: 'Home', protected: true },
   { path: '/login', element: Login, label: 'Login' },
-  { path: 'owner', element: Owner, label: 'owner' },
+  { path: '/owner', element: Owner, label: 'owner' },
 ];

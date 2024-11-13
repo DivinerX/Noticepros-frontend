@@ -4,6 +4,7 @@ import InputMask from 'react-input-mask';
 import * as Api from '../api'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux';
+import { useAppNavigation } from '../common/useAppNavigation';
 
 export interface IOwner {
   FirstName: string;
@@ -42,6 +43,7 @@ const Owner: React.FC = () => {
     Role: 'owner'
   });
   const dispatch: AppDispatch = useDispatch();
+  const { navigateToHome } = useAppNavigation();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -52,6 +54,13 @@ const Owner: React.FC = () => {
     e.preventDefault();
     console.log('Form submitted:', formData);
     dispatch(Api.StoreOwner(formData))
+    .then(data => {
+      console.log(data)
+      navigateToHome()
+    })
+    .catch(err => {
+      console.error(err)
+    })
   };
 
   return (

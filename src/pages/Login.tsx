@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import * as Api from '../api'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux';
+import { useAppNavigation } from '../common/useAppNavigation';
 
 export interface ILogin {
   email: string;
@@ -17,6 +18,7 @@ const Login: React.FC = () => {
     type: 1,
   });
   const dispatch: AppDispatch = useDispatch();
+  const { navigateToHome } = useAppNavigation();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,7 +27,12 @@ const Login: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    dispatch(Api.Login(formData))
+    dispatch(Api.Login(formData)).then((data) => {
+      console.log(data)
+      navigateToHome()
+    }).catch(err => {
+      console.log(err)
+    })
   };
 
   return (

@@ -12,8 +12,8 @@ export const StoreOwner = (data: IOwner) => async (dispatch: AppDispatch) => {
     const res = await post(`${apiURL}/${userUrl}`, data);
     DataStore.set('ACCESS_TOKEN', res.data.data.Token)
     alert(`Your password is ${res.data.data.Password}`)
-    dispatch(GetUserInfo());
-  } catch (err) {
-    console.error(err);
+    dispatch(GetUserInfo())
+  } catch (err: any) {
+    throw err.response.data
   }
 };

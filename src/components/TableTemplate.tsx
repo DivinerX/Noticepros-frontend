@@ -1,24 +1,43 @@
-import React, { useState } from "react";
-import { ChevronUpIcon, ChevronDownIcon, PlusIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid"; // Import icons
+import React, { useState, useRef, useEffect } from "react";
+import {
+  ChevronUpIcon,
+  ChevronDownIcon,
+  PlusIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/solid"; // Import icons
+
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
 
 interface TableTemplateProps<T> {
   data: T[];
   columns: { key: keyof T; label: string }[];
   onAddNew?: () => void;
+  Modal: React.FC<ModalProps>; // Specify the Modal props
 }
 
 const TableTemplate = <T extends {}>({
   data,
   columns,
   onAddNew,
+  Modal,
 }: TableTemplateProps<T>) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortKey, setSortKey] = useState<keyof T | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const itemsPerPage = 5;
 
-  // Handle Sorting
+  // Ref to detect click outside of the modal
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  const handleModalOpen = () => setIsModalOpen(true);
+  const handleModalClose = () => setIsModalOpen(false);
+
   const handleSort = (key: keyof T) => {
     const order = sortKey === key && sortOrder === "asc" ? "desc" : "asc";
     setSortKey(key);
@@ -50,6 +69,25 @@ const TableTemplate = <T extends {}>({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedData = sortedData.slice(startIndex, startIndex + itemsPerPage);
 
+  // Close modal if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleModalClose();
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen]);
+
   return (
     <div className="overflow-x-auto bg-white p-6 shadow-lg rounded-lg">
       {/* Header and Search */}
@@ -63,7 +101,7 @@ const TableTemplate = <T extends {}>({
         />
         {onAddNew && (
           <button
-            onClick={onAddNew}
+            onClick={handleModalOpen}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition duration-200 flex items-center"
           >
             <PlusIcon className="h-5 w-5 mr-2" /> Add New
@@ -106,7 +144,7 @@ const TableTemplate = <T extends {}>({
         </tbody>
       </table>
 
-      <div className="flex justify-end mt-6 space-x-4">
+      <div className="flex justify-end mt-6 space-x-4 items-center">
         <button
           onClick={() => setCurrentPage((page) => Math.max(page - 1, 1))}
           disabled={currentPage === 1}
@@ -129,6 +167,7 @@ const TableTemplate = <T extends {}>({
           Next <ChevronRightIcon className="h-5 w-5 ml-2" />
         </button>
       </div>
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} ref={modalRef} />
     </div>
   );
 };

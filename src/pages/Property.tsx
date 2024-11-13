@@ -1,6 +1,7 @@
 import React from "react";
 import DashboardLayout from "../components/DashboardLayout";
 import TableTemplate from "../components/TableTemplate";
+import PropertyFormModal from "../components/PropertyFormModal";
 
 export interface IProperty {
   ID: string;
@@ -19,7 +20,6 @@ const PropertyTable: React.FC = () => {
   const properties: IProperty[] = [
     { ID: "1", Name: "Property One", Address: "123 Main St", City: "City1", State: "ST", ZipCode: "12345", County: "County1", NumUnitTotal: 10 },
     { ID: "2", Name: "Property Two", Address: "456 Side St", City: "City2", State: "ST", ZipCode: "67890", County: "County2", NumUnitTotal: 8 },
-    // Add more properties here
   ];
 
   const columns: { key: keyof IProperty; label: string }[] = [
@@ -34,7 +34,6 @@ const PropertyTable: React.FC = () => {
   ];
 
   const addNewProperty = () => {
-    // Logic to add new property (e.g., show form modal or add mock data)
     console.log("Add New Property");
   };
 
@@ -43,6 +42,7 @@ const PropertyTable: React.FC = () => {
       data={properties}
       columns={columns}
       onAddNew={addNewProperty}
+      Modal={PropertyFormModal}
     />
   );
 };

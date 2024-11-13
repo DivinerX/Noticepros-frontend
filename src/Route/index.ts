@@ -1,6 +1,7 @@
 import Home from "../pages/Home";
 import Login from "../pages/Login"
 import Owner from "../pages/Owner";
+import Property from "../pages/Property";
 
 interface Route {
   path: string;
@@ -12,5 +13,6 @@ interface Route {
 export const routes: Route[] = [
   { path: '/', element: Home, label: 'Home', protected: true },
   { path: '/login', element: Login, label: 'Login' },
-  { path: '/owner', element: Owner, label: 'owner' },
+  { path: '/owner', element: Owner, label: 'Owner' },
+  { path: '/property', element: Property, label: 'Property' },
 ];

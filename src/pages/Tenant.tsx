@@ -3,66 +3,66 @@ import DashboardLayout from "../components/DashboardLayout";
 import TableTemplate from "../components/TableTemplate";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux";
-import * as Api from '../api'
-import PropertyFormModal from "../components/PropertyFormModal";
+import * as Api from '../api';
+import TenantFormModal from "../components/TenantFormModal";
 
 export interface ITenant {
   ID?: string;
-  Name?: string;
-  Address: string;
-  City: string;
-  Unit?: string;
-  State: string;
-  ZipCode: string;
-  County: string;
-  NumUnitTotal?: number;
+  FirstName: string;
+  LastName: string;
+  Telephone: string;
+  TelephoneCell: string;
+  TelephoneFax: string;
+  Email1: string;
+  Email2?: string;
+  SS?: string;
+  DOB?: string;
+  DL?: string;
+  DLST?: string;
 }
-
 
 const TenantTable: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
-    setLoading(true)
-    dispatch(Api.GetProperties())
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [])
-  const properties: ITenant[] = useSelector((state: RootState) => state.property);
+    setLoading(true);
+    dispatch(Api.GetTenants())
+      .finally(() => setLoading(false));
+  }, [dispatch]);
+
+  const tenants: ITenant[] = useSelector((state: RootState) => state.tenant);
 
   const columns: { key: keyof ITenant; label: string }[] = [
-    { key: "ID", label: "ID" },
-    { key: "Name", label: "Name" },
-    { key: "Address", label: "Address" },
-    { key: "City", label: "City" },
-    { key: "State", label: "State" },
-    { key: "ZipCode", label: "ZipCode" },
-    { key: "County", label: "County" },
-    { key: "NumUnitTotal", label: "Units" },
+    { key: "FirstName", label: "First Name" },
+    { key: "LastName", label: "Last Name" },
+    { key: "Telephone", label: "Telephone" },
+    { key: "Email1", label: "Email" },
+    { key: "SS", label: "SS" },
+    { key: "DOB", label: "DOB" },
+    { key: "DL", label: "Driver's License" },
   ];
 
-  const addNewTenant = () => {
-    console.log("Add New Tenant");
-  };
+  const addNewTenant = () => setIsModalOpen(true);
 
   return (
-    <TableTemplate
-      data={properties}
-      columns={columns}
-      onAddNew={addNewTenant}
-      Modal={PropertyFormModal}
-      loading={loading}
-    />
+    <>
+      <TableTemplate
+        data={tenants}
+        columns={columns}
+        onAddNew={addNewTenant}
+        loading={loading}
+      />
+      <TenantFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 };
 
-const Tenant = () => {
-  return (
-    <DashboardLayout title="Tenants">
-      <>Tenant</>
-    </DashboardLayout>
-  )
-}
+const Tenant = () => (
+  <DashboardLayout title="Tenants">
+    <TenantTable />
+  </DashboardLayout>
+);
 
 export default Tenant;

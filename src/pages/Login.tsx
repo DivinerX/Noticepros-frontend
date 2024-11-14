@@ -4,6 +4,7 @@ import * as Api from '../api'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../redux';
 import { useAppNavigation } from '../common/useAppNavigation';
+import useToastr from '../common/useToastr';
 
 export interface ILogin {
   email: string;
@@ -19,6 +20,7 @@ const Login: React.FC = () => {
   });
   const dispatch: AppDispatch = useDispatch();
   const { navigateToHome } = useAppNavigation();
+  const { success, error, info, warning } = useToastr();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -29,9 +31,10 @@ const Login: React.FC = () => {
     console.log('Form submitted:', formData);
     dispatch(Api.Login(formData)).then((data) => {
       console.log(data)
+      success(data.data)
       navigateToHome()
     }).catch(err => {
-      console.log(err)
+      error(err.data)
     })
   };
 

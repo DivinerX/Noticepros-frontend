@@ -4,6 +4,7 @@ import { routes } from './Route';
 import { Provider } from 'react-redux';
 import store from './redux/index';
 import "./App.css"
+import "toastr/build/toastr.min.css";
 import PrivateRoute from './components/PrivateRoute';
 
 function App() {

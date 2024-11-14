@@ -7,11 +7,6 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/solid"; // Import icons
 
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
 interface TableTemplateProps<T> {
   data: T[]; // data can be empty, handled by no data state
   columns: { key: keyof T; label: string }[];

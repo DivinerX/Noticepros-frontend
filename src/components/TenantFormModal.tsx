@@ -1,9 +1,10 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import InputMask from 'react-input-mask';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Api from '../api';
-import { AppDispatch } from '../redux';
+import { AppDispatch, RootState } from '../redux';
 import { ITenant } from '../pages/Tenant';
+import { IProperty } from '../pages/Property';
 
 interface TenantFormModalProps {
   isOpen: boolean;
@@ -17,20 +18,21 @@ const TenantFormModal = forwardRef<HTMLDivElement, TenantFormModalProps>(
     const [formData, setFormData] = useState<ITenant>({
       FirstName: '',
       LastName: '',
-      Telephone: '',
-      TelephoneCell: '',
-      TelephoneFax: '',
+      TelePhone: '',
+      TelePhoneCell: '',
+      TelePhoneFax: '',
       Email1: '',
       Email2: '',
       SS: '',
       DOB: '',
       DL: '',
-      DLST: ''
+      DLST: '',
+      PID: '',
     });
 
     const dispatch: AppDispatch = useDispatch();
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       const { name, value } = e.target;
       setFormData((prevData) => ({
         ...prevData,
@@ -51,12 +53,35 @@ const TenantFormModal = forwardRef<HTMLDivElement, TenantFormModalProps>(
         });
     };
 
+    const properties: IProperty[] = useSelector((state: RootState) => state.property);
+
+    useEffect(() => {
+      dispatch(Api.GetProperties())
+    }, [dispatch])
+
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
         <div className="bg-white w-full max-w-md p-6 rounded-lg shadow-md" ref={ref}>
           <h2 className="text-lg font-semibold mb-2">Tenant Information Form</h2>
           <form onSubmit={handleSubmit}>
 
+            <div className="flex-1 mb-4">
+              <label className="text-md font-medium text-gray-700">Property</label>
+              <select
+                name="PID"
+                value={formData.PID}
+                onChange={handleInputChange}
+                className="w-full p-2 border border-gray-300 rounded text-sm"
+                required
+              >
+                <option value=""></option>
+                {
+                  properties.map(p => (
+                    <option value={p.ID}>{`${p.Address}, ${p.City}, ${p.County}`}</option>
+                  ))
+                }
+              </select>
+            </div>
             <div className="flex space-x-4">
               <div className="flex-1 mb-4">
                 <label className="text-md font-medium text-gray-700">First Name</label>
@@ -85,12 +110,12 @@ const TenantFormModal = forwardRef<HTMLDivElement, TenantFormModalProps>(
 
             <div className="flex space-x-4 items-end">
               <div className="flex-1 mb-4">
-                <label className="text-md font-medium text-gray-700">Primary Telephone</label>
+                <label className="text-md font-medium text-gray-700">Primary TelePhone</label>
                 <InputMask
                   mask="999-999-9999"
                   placeholder="###-###-####"
-                  name="Telephone"
-                  value={formData.Telephone || ''}
+                  name="TelePhone"
+                  value={formData.TelePhone || ''}
                   onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded text-sm"
                   required
@@ -98,12 +123,12 @@ const TenantFormModal = forwardRef<HTMLDivElement, TenantFormModalProps>(
               </div>
 
               <div className="flex-1 mb-4">
-                <label className="text-md font-medium text-gray-700">Secondary Telephone</label>
+                <label className="text-md font-medium text-gray-700">Secondary TelePhone</label>
                 <InputMask
                   mask="999-999-9999"
                   placeholder="###-###-####"
-                  name="TelephoneCell"
-                  value={formData.TelephoneCell}
+                  name="TelePhoneCell"
+                  value={formData.TelePhoneCell}
                   onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded text-sm"
                   required
@@ -115,8 +140,8 @@ const TenantFormModal = forwardRef<HTMLDivElement, TenantFormModalProps>(
                 <InputMask
                   mask="999-999-9999"
                   placeholder="###-###-####"
-                  name="TelephoneFax"
-                  value={formData.TelephoneFax}
+                  name="TelePhoneFax"
+                  value={formData.TelePhoneFax}
                   onChange={handleInputChange}
                   className="w-full p-2 border border-gray-300 rounded text-sm"
                   required

@@ -20,7 +20,7 @@ const Login: React.FC = () => {
   });
   const dispatch: AppDispatch = useDispatch();
   const { navigateToHome } = useAppNavigation();
-  const { success, error, info, warning } = useToastr();
+  const { success, error } = useToastr();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

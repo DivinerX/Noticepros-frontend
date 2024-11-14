@@ -5,20 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux";
 import * as Api from '../api';
 import TenantFormModal from "../components/TenantFormModal";
+import { IProperty } from "./Property";
 
 export interface ITenant {
   ID?: string;
   FirstName: string;
   LastName: string;
-  Telephone: string;
-  TelephoneCell: string;
-  TelephoneFax: string;
+  TelePhone: string;
+  TelePhoneCell: string;
+  TelePhoneFax: string;
   Email1: string;
   Email2?: string;
   SS?: string;
   DOB?: string;
   DL?: string;
   DLST?: string;
+  PID: string;
+  Property?: IProperty;
 }
 
 const TenantTable: React.FC = () => {
@@ -37,7 +40,7 @@ const TenantTable: React.FC = () => {
   const columns: { key: keyof ITenant; label: string }[] = [
     { key: "FirstName", label: "First Name" },
     { key: "LastName", label: "Last Name" },
-    { key: "Telephone", label: "Telephone" },
+    { key: "TelePhone", label: "TelePhone" },
     { key: "Email1", label: "Email" },
     { key: "SS", label: "SS" },
     { key: "DOB", label: "DOB" },

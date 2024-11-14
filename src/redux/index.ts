@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import ownerReducer from './slice/owner.slice';
+// import ownerReducer from './slice/owner.slice';
 import authReducer from './slice/auth.slice';
-// import thunk from 'redux-thunk';
+import propertyReducer from './slice/property.slice';
 
 const store = configureStore({
   reducer: {
-    owner: ownerReducer,
     auth: authReducer,
+    property: propertyReducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
 });

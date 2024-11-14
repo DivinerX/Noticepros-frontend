@@ -24,8 +24,12 @@ const DashboardLayout: React.FC<IDashboardLayoutProps> = ({ children, title }) =
             Properties
           </Link>
           <hr />
-          <Link to="/settings" className="block px-4 py-2 rounded hover:bg-gray-700">
+          <Link to="/tenant" className="block px-4 py-2 rounded hover:bg-gray-700">
             Tenants
+          </Link>
+          <hr />
+          <Link to="/notice" className="block px-4 py-2 rounded hover:bg-gray-700">
+            Notices
           </Link>
         </nav>
       </aside>
